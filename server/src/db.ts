@@ -8,7 +8,7 @@ if (!MONGO_URI) {
 
 console.log("MONGO_URI runtime =", process.env.MONGO_URI);
 
-const connectDB = async (): Promise<void> => {
+export const connectDB = async (): Promise<void> => {
   try {
     await mongoose.connect(MONGO_URI);
     console.log("MongoDB connected");
@@ -18,4 +18,4 @@ const connectDB = async (): Promise<void> => {
   }
 };
 
-export default connectDB;
+export const mongoUri = MONGO_URI;
