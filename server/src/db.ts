@@ -6,8 +6,6 @@ if (!MONGO_URI) {
   throw new Error("MONGO_URI is not defined in environment variables");
 }
 
-console.log("MONGO_URI runtime =", process.env.MONGO_URI);
-
 export const connectDB = async (): Promise<void> => {
   try {
     await mongoose.connect(MONGO_URI);

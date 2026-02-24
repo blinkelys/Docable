@@ -4,6 +4,7 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import { connectDB, mongoUri } from "./db";
 import MongoStore from "connect-mongo";
+import { generateUser } from "./routes/auth";
 import session from "express-session";
 
 import type { RequestHandler } from "express";
@@ -44,6 +45,8 @@ app.use(
 );
 
 connectDB();
+
+generateUser();
 
 // Start the server
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
