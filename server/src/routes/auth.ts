@@ -56,6 +56,20 @@ router.get("/me", isAuthorized, async (req: Request, res: Response, next: NextFu
   }
 });
 
+// POST /auth/logout
+router.post("/logout", (req: Request, res: Response, next: NextFunction) => {
+  req.session.destroy((err) => {
+    if (err) return next(err);
+
+    res.clearCookie("sid", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+    });
+
+    res.status(200).json({ message: "Logout successful" });
+  });
+});
 
 // Create admin user from ENV
 export async function generateUser() {
