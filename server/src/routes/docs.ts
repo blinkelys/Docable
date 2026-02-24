@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction, Router } from "express";
 import { isAuthorized } from "../middleware/auth";
-import DocModel from "models/docModel";
+import DocModel from "../models/docModel";
 
 const router = Router();
 
