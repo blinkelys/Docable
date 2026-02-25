@@ -7,6 +7,7 @@ const router = Router();
 
 // Login route
 router.post("/login", async (req: Request, res: Response, next: NextFunction) => {
+  console.log(">>> LOGIN ROUTE HIT:", req.body); // ADD THIS LINE
   try {
     const { email, password } = req.body;
 
@@ -14,7 +15,9 @@ router.post("/login", async (req: Request, res: Response, next: NextFunction) =>
       return res.status(400).json({ message: "Email and password required" });
     }
 
-    const user = await User.findOne({ email });
+    const formattedEmail = email.toLowerCase().trim();
+
+    const user = await User.findOne({ email: formattedEmail });
     if (!user) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
@@ -71,29 +74,27 @@ router.post("/logout", (req: Request, res: Response, next: NextFunction) => {
   });
 });
 
-// Create admin user from ENV
 export async function generateUser() {
-  const email = process.env.ADMIN_EMAIL;
+  const email = process.env.ADMIN_EMAIL?.toLowerCase().trim();
   const username = process.env.ADMIN_USERNAME;
   const password = process.env.ADMIN_PASSWORD;
 
-  if (!email || !username || !password) {
-    console.warn("Admin env vars missing – skipping admin creation");
+  if (!email || !username || !password) return;
+
+  const existing = await User.findOne({ email });
+  if (existing) {
+    console.log("Admin already exists.");
     return;
   }
 
-  const existing = await User.findOne({ email });
-  if (existing) return;
-
   const encryptedPassword = await bcrypt.hash(password, 12);
-
   await User.create({
     email,
     username,
     password: encryptedPassword,
   });
 
-  console.log("Admin user created");
+  console.log("Admin user created successfully");
 }
 
 export default router;

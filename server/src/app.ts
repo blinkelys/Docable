@@ -49,10 +49,10 @@ connectDB();
 generateUser();
 
 import authRoutes from "./routes/auth";
-app.use("/auth", authRoutes);
+app.use("/api/auth", authRoutes);
 
 import docRoutes from "./routes/docs";
-app.use("/docs", docRoutes)
+app.use("/api/docs", docRoutes)
 
 // Start the server
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
